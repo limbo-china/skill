@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as a}from"./app-DrE-gYV7.js";const o={};function n(r,c){return t(),a("div")}const l=e(o,[["render",n],["__file","1.html.vue"]]),s=JSON.parse('{"path":"/categories/diannaoweixiu/1.html","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{l as comp,s as data};

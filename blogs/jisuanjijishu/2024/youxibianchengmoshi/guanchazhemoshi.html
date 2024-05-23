@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="VuePress 2.0.0-rc.9">
+    <script>
+      (function() {
+        const userMode = localStorage.getItem('vuepress-reco-color-scheme') || 'auto';
+        const systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (userMode === 'dark' || (userMode === 'auto' && systemDarkMode)) {
+          document.documentElement.classList.toggle('dark', true);
+        }
+      })();
+    </script>
+    <title>游戏编程模式（三）：观察者模式 | 知识技能分享平台</title><meta name="description" content="share">
+    <link rel="preload" href="/skill/assets/style-CWoPUyZH.css" as="style"><link rel="stylesheet" href="/skill/assets/style-CWoPUyZH.css">
+    <link rel="modulepreload" href="/skill/assets/app-DrE-gYV7.js"><link rel="modulepreload" href="/skill/assets/guanchazhemoshi.html-C22GY2IU.js">
+    <link rel="prefetch" href="/skill/assets/timeline.html-C9Mu2f56.js" as="script"><link rel="prefetch" href="/skill/assets/posts.html-nNgTYfwH.js" as="script"><link rel="prefetch" href="/skill/assets/friendship-link.html-BtrDzmEe.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-CR0C_7hn.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-CBDEelpH.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-BCTfFtCD.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-CT59soAE.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-CWOMQGnZ.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-AHnCQlkK.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-eVeSPSj9.js" as="script"><link rel="prefetch" href="/skill/assets/index.html-DIvEJxZ-.js" as="script"><link rel="prefetch" href="/skill/assets/api.html-DhO1Nc0r.js" as="script"><link rel="prefetch" href="/skill/assets/home.html-0-v7baUf.js" as="script"><link rel="prefetch" href="/skill/assets/plugin.html-CpE8npad.js" as="script"><link rel="prefetch" href="/skill/assets/theme.html-BaHVPDQ-.js" as="script"><link rel="prefetch" href="/skill/assets/diannaoweixiu1.html-Cj4rnlPm.js" as="script"><link rel="prefetch" href="/skill/assets/diannaoweixiu2.html-BqaaKkSw.js" as="script"><link rel="prefetch" href="/skill/assets/minglingmoshihexiangyuanmoshi.html-CksOAFTy.js" as="script"><link rel="prefetch" href="/skill/assets/gaishu.html-2Ns6aBXl.js" as="script"><link rel="prefetch" href="/skill/assets/jisuanjituxingxuejichu（yi）：guangzhatu（weitu）.html-Cse61u2O.js" as="script"><link rel="prefetch" href="/skill/assets/404.html-BMuCqu_4.js" as="script"><link rel="prefetch" href="/skill/assets/reco-valine-BI2JzRng.js" as="script"><link rel="prefetch" href="/skill/assets/giscus-aTimukGI-CKTvSCx2.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="theme-container"><div class="common-wrapper series--no"><header class="navbar-container" style="top:0;"><div class="site-brand nav-item"><img class="logo" src="/skill/logo.png" alt="知识技能分享平台"><a href="/skill/" class="site-name can-hide">知识技能分享平台</a></div><div class="nav-item navbar-links-wrapper" style=""><div><form class="search-box" role="search"><input type="search" autocomplete="off" spellcheck="false" value><!----></form></div><nav class="navbar-links"><!--[--><div class="navbar-links__item"><a href="/skill/" class="link" aria-label="主页"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->主页<!--]--></span></span><!--[--><!--]--></a></div><div class="navbar-links__item"><a href="/skill/categories/jisuanjijishu/1" class="link" aria-label="分类"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->分类<!--]--></span></span><!--[--><!--]--></a></div><div class="navbar-links__item"><a href="/skill/tags/jisuanjituxingxue/1" class="link" aria-label="标签"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->标签<!--]--></span></span><!--[--><!--]--></a></div><!--]--></nav><span class="xicon-container btn-toggle-dark-mode btn--dark-mode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" style="width:20px;height:20px;font-size:20px;color:inherit;"><path d="M15 2h2v3h-2z" fill="currentColor"></path><path d="M27 15h3v2h-3z" fill="currentColor"></path><path d="M15 27h2v3h-2z" fill="currentColor"></path><path d="M2 15h3v2H2z" fill="currentColor"></path><path d="M5.45 6.884l1.414-1.415l2.121 2.122l-1.414 1.414z" fill="currentColor"></path><path d="M23 7.58l2.121-2.12l1.414 1.414l-2.121 2.121z" fill="currentColor"></path><path d="M23.002 24.416l1.415-1.414l2.12 2.122l-1.413 1.414z" fill="currentColor"></path><path d="M5.47 25.13L7.59 23L9 24.42l-2.12 2.12l-1.41-1.41z" fill="currentColor"></path><path d="M16 8a8 8 0 1 0 8 8a8 8 0 0 0-8-8zm0 14a6 6 0 0 1 0-12z" fill="currentColor"></path></svg></span><span class="xicon-container btn-toggle-menus"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" style="width:20px;height:20px;font-size:20px;color:inherit;"><circle cx="16" cy="8" r="2" fill="currentColor"></circle><circle cx="16" cy="16" r="2" fill="currentColor"></circle><circle cx="16" cy="24" r="2" fill="currentColor"></circle></svg></span></div></header><!----><div class="mobile-menus-container"><nav class="navbar-links mobile"><!--[--><div class="navbar-links__item"><a href="/skill/" class="link" aria-label="主页"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->主页<!--]--></span></span><!--[--><!--]--></a></div><div class="navbar-links__item"><a href="/skill/categories/jisuanjijishu/1" class="link" aria-label="分类"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->分类<!--]--></span></span><!--[--><!--]--></a></div><div class="navbar-links__item"><a href="/skill/tags/jisuanjituxingxue/1" class="link" aria-label="标签"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->标签<!--]--></span></span><!--[--><!--]--></a></div><!--]--></nav><div class="appearance"><span>Appearance</span><span class="xicon-container btn-toggle-dark-mode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" style="width:20px;height:20px;font-size:20px;color:inherit;"><path d="M15 2h2v3h-2z" fill="currentColor"></path><path d="M27 15h3v2h-3z" fill="currentColor"></path><path d="M15 27h2v3h-2z" fill="currentColor"></path><path d="M2 15h3v2H2z" fill="currentColor"></path><path d="M5.45 6.884l1.414-1.415l2.121 2.122l-1.414 1.414z" fill="currentColor"></path><path d="M23 7.58l2.121-2.12l1.414 1.414l-2.121 2.121z" fill="currentColor"></path><path d="M23.002 24.416l1.415-1.414l2.12 2.122l-1.413 1.414z" fill="currentColor"></path><path d="M5.47 25.13L7.59 23L9 24.42l-2.12 2.12l-1.41-1.41z" fill="currentColor"></path><path d="M16 8a8 8 0 1 0 8 8a8 8 0 0 0-8-8zm0 14a6 6 0 0 1 0-12z" fill="currentColor"></path></svg></span></div></div><div class="series-mask"></div><aside class="series-container"><div class="site-brand"><img class="logo" src="/skill/logo.png" alt="知识技能分享平台"><a href="/skill/" class="site-name can-hide">知识技能分享平台</a></div><!--[--><!--]--></aside><!--[--><main class="page-container"><h1 class="page-title">游戏编程模式（三）：观察者模式</h1><div class="page-info"><span class="xicon-container left"><!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" class="xicon-icon" style="width:18px;height:18px;font-size:18px;color:inherit;"><path d="M16 4a5 5 0 1 1-5 5a5 5 0 0 1 5-5m0-2a7 7 0 1 0 7 7a7 7 0 0 0-7-7z" fill="currentColor"></path><path d="M26 30h-2v-5a5 5 0 0 0-5-5h-6a5 5 0 0 0-5 5v5H6v-5a7 7 0 0 1 7-7h6a7 7 0 0 1 7 7z" fill="currentColor"></path></svg><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->桃酥<!--]--></span></span><span class="xicon-container left"><!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" class="xicon-icon" style="width:18px;height:18px;font-size:18px;color:inherit;"><path d="M26 4h-4V2h-2v2h-8V2h-2v2H6c-1.1 0-2 .9-2 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 22H6V12h20v14zm0-16H6V6h4v2h2V6h8v2h2V6h4v4z" fill="currentColor"></path></svg><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->2024/05/13<!--]--></span></span><span class="xicon-container left"><!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" class="xicon-icon" style="width:18px;height:18px;font-size:18px;color:inherit;"><path d="M11.17 6l3.42 3.41l.58.59H28v16H4V6h7.17m0-2H4a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2H16l-3.41-3.41A2 2 0 0 0 11.17 4z" fill="currentColor"></path></svg><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[--><!--[--><a href="/skill/categories/jisuanjijishu/1.html" class="">计算机技术</a><!--]--><!--]--></span></span><span class="xicon-container left"><!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" class="xicon-icon" style="width:18px;height:18px;font-size:18px;color:inherit;"><path d="M10 14a4 4 0 1 1 4-4a4.005 4.005 0 0 1-4 4zm0-6a2 2 0 1 0 1.998 2.004A2.002 2.002 0 0 0 10 8z" fill="currentColor"></path><path d="M16.644 29.415L2.586 15.354A2 2 0 0 1 2 13.941V4a2 2 0 0 1 2-2h9.941a2 2 0 0 1 1.414.586l14.06 14.058a2 2 0 0 1 0 2.828l-9.943 9.943a2 2 0 0 1-2.829 0zM4 4v9.942L18.058 28L28 18.058L13.942 4z" fill="currentColor"></path></svg><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[--><!--[--><a href="/skill/tags/youxikaifa/1.html" class="">游戏开发</a><!--]--><!--]--></span></span><!----></div><div class="theme-reco-default-content"><div><h1 id="游戏编程模式-三-观察者模式-观察者模式" tabindex="-1"><a class="header-anchor" href="#游戏编程模式-三-观察者模式-观察者模式"><span>游戏编程模式（三）：观察者模式 #观察者模式</span></a></h1><p>​ 只要你随便打开一个手机或者电脑的应用，十有八九它就用了MVC架构，观察者模式几乎随处可见，以至于在Java语言中它被放进了核心库中（java.util.Observer） ，C#语言中更是直接嵌入了语法（event关键字）。</p><p>​ 游戏开发中，说到观察者模式，典型的场景——成就系统：</p><p>一.</p><p>​ 设想一个场景，有一段物理系统相关的代码处理重力，并且追踪了哪些物体待在地表哪些坠入深渊，而开发者需要实现”从地表掉落到深渊“的成就。如果把成就相关代码放入物理相关代码中，那会是一团糟。当然，我们大概也不会这样做，通常会稍微做一些分离，比如把被追踪的物体和事件抽离出来：</p><div class="language-C++ line-numbers-mode" data-ext="C++" data-title="C++"><pre class="language-C++"><code>void Physics::updateEntity(Entity&amp; entity)
+{
+    bool wasOnSurface = entity.isOnSurface();
+    entity.accelerate(GRAVITY);
+    entity.update();
+    if (wasOnSurface &amp;&amp; !entity.isOnSurface())
+    {
+    	notify(entity, EVENT_START_FALL);
+    }
+}
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ 但这明显还不够，并没有完全解耦，现在可以直接引入观察者模式：</p><p>二.</p><p>​ <strong>观察者</strong></p><div class="language-C++ line-numbers-mode" data-ext="C++" data-title="C++"><pre class="language-C++"><code>class Observer
+{
+public:
+    virtual ~Observer() {}
+    virtual void onNotify(const Entity&amp; entity, Event event) = 0;
+};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ 实现了Observer类的具体类就成为了观察者，在成就系统中，可以是：</p><div class="language-C++ line-numbers-mode" data-ext="C++" data-title="C++"><pre class="language-C++"><code>class Achievements : public Observer
+{
+public:
+    virtual void onNotify(const Entity&amp; entity, Event event){
+        switch (event){
+            case EVENT_ENTITY_FELL:
+            if (entity.isHero() &amp;&amp; heroIsOnBridge_){
+            	unlock(ACHIEVEMENT_FELL_OFF_BRIDGE);
+            }
+            ...
+        }
+    }
+private:
+    ...
+    bool heroIsOnBridge_;
+};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ <strong>被观察者</strong></p><div class="language-c++ line-numbers-mode" data-ext="c++" data-title="c++"><pre class="language-c++"><code>class Subject
+{
+private:
+    Observer* observers_[MAX_OBSERVERS];
+    int numObservers_;
+public:
+    void addObserver(Observer* observer){
+    	// 添加到数组中……
+    }
+    void removeObserver(Observer* observer){
+    	// 从数组中移除……
+    }
+    void notify(const Entity&amp; entity, Event event){
+        for (int i = 0; i &lt; numObservers_; i++){
+        	observers_[i]-&gt;onNotify(entity, event);
+        }
+    }
+};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ 被观察的对象拥有通知的方法，并维护了一个列表，保存等它通知的观察者。现在可以让物理系统实现Subject类：</p><div class="language-c++ line-numbers-mode" data-ext="c++" data-title="c++"><pre class="language-c++"><code>class Physics : public Subject{
+public:
+    void updateEntity(Entity&amp; entity);
+};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>三.</p><p>​ <strong>多线程和同步</strong></p><p>​ 值得注意的是，观察者模式是同步的，也就是说，被观察者直接调用了观察者，这意味着直到所有观察者通知方法返回后，被观察者才会继续自己的工作。在UI线程中，这需要小心，对事件的同步响应应该尽快返回，否则会导致UI锁死。当有必要的耗时操作时，应该将其送到其它线程或者工作队列中去。而当进一步引入了线程和锁，要防止观察者获得被观察者拥有的锁，否则就会进入死锁。</p><p>四.</p><p>​ <strong>链式观察者</strong></p><p>​ 上述实现方法中，Subject拥有一列指针指向观察它的Observer。我们可以将观察者的列表分布到观察者自己中来解决内存的动态分配问题，链表在这里起到重要作用：</p><div class="language-C++ line-numbers-mode" data-ext="C++" data-title="C++"><pre class="language-C++"><code>class Subject{
+private:
+	Observer* head_;
+    
+    //添加和删除节点的方法 add/remove
+    ...
+};
+
+class Observer{
+friend class Subject;
+
+private:
+	Observer* next_;
+};
+
+void Subject::notify(const Entity&amp; entity, Event event)
+{
+    Observer* observer = head_;
+    while (observer != NULL)
+    {
+        observer-&gt;onNotify(entity, event);
+        observer = observer-&gt;next_;
+    }
+}
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ 链表的各个基本操作在此就不展开叙述，当然，和其它单链表一样，在删除节点时需要遍历链表，所以进一步可以考虑引入双向链表来获得常量时间的删除操作。</p><p>​ 还有一个问题，被观察者是按链表的顺序来通知观察者的，这就要求观察者之间不应该有顺序相关性，否则观察者之间会依然存在一个微妙的耦合。</p><p>五.</p><p>​ <strong>链表节点池</strong></p><p>​ 继续深入，会发现之前的方法存在一个致命的问题：如果我们打算将某个观察者注册到不同的被观察者列表中，链表的节点添加操作会使得靠前加入的链表遭到破坏，链表节点池可以解决这一问题：</p><div class="language-C++ line-numbers-mode" data-ext="C++" data-title="C++"><pre class="language-C++"><code>class Node{
+
+private:
+	Observer* observer;
+    Node* next;
+};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ 把链表节点本身和观察者的角色解耦，在每次将观察者加入列表时，新建一个Node节点。</p><p>六.</p><p>​ <strong>对象销毁</strong></p><p>​ 再往下深入，讨论一个被观察者或者观察者被删除时会发生什么。</p><p>​ 在C++这种可以主动进行内存回收的语言中，如果不小心在某些观察者上调用了delete，而被观察者仍然拥有指向它的指针，这时被观察试图发送一个通知，自然会导致程序出错，所以，在被删除时取消注册是观察者的职责，通常可以在它的析构器上加上removeObserver() 。</p><p>​ 如果是不小心在被观察者上调用delete，这倒是不会导致程序出错，但是它的观察者列表中的那些观察者可能就永远收不到通知了，这将造成内存浪费。解决办法也简单，让被观察者在它被删除前发送一个最终的“死亡通知” ，通知各观察者“自身死亡的消息”，观察者就可以做出相应的行为。</p><p>​ <strong>垃圾回收</strong></p><p>​ 那在那些不能主动进行内存回收的语言中呢？它们有垃圾回收器，不存在不小心调用delete的情况，但这并不能说明就安全了。</p><p>​ 设想一个场景：有UI显示玩家角色情况的状态，比如健康和道具。 当玩家在屏幕上时，你为其初始化了一个对象。 当UI退出时，直接忘掉这个对象，交给GC清理。每当角色脸上挨了一拳，就发送一个通知。 UI观察到了，然后更新健康槽， 当玩家离开场景，却没有取消观察者的注册。此时，UI界面不再可见，但也不会进入垃圾回收系统，因为角色的观察者列表还保存着对它的引用。 每一次场景加载后，将会给那个不断增长的观察者列表添加一个新实例。玩家玩游戏时，来回跑动，打架，角色的通知发送给所有的界面。 它们不在屏幕上，但它们接受通知，这样就浪费CPU循环在不可见的UI元素上了。</p></div></div><footer class="page-meta"><!----><div class="meta-item last-updated"><span class="xicon-container left meta-item-label"><!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" class="xicon-icon" style="width:20px;height:20px;font-size:20px;color:inherit;"><path d="M26 4h-4V2h-2v2h-8V2h-2v2H6c-1.1 0-2 .9-2 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 22H6V12h20v14zm0-16H6V6h4v2h2V6h8v2h2V6h4v4z" fill="currentColor"></path></svg><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->Last Updated 5/22/2024, 2:56:22 AM<!--]--></span></span></div></footer><!----><!----></main><!--]--><!----></div></div><!--[--><!----><!----><!--]--><!--]--></div>
+    <script type="module" src="/skill/assets/app-DrE-gYV7.js" defer></script>
+  </body>
+</html>

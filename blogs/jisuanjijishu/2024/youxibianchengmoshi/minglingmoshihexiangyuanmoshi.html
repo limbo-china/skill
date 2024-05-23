@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="VuePress 2.0.0-rc.9">
+    <script>
+      (function() {
+        const userMode = localStorage.getItem('vuepress-reco-color-scheme') || 'auto';
+        const systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (userMode === 'dark' || (userMode === 'auto' && systemDarkMode)) {
+          document.documentElement.classList.toggle('dark', true);
+        }
+      })();
+    </script>
+    <title>游戏编程模式（二）：命令模式和享元模式 | 知识技能分享平台</title><meta name="description" content="share">
+    <link rel="preload" href="/skill/assets/style-CWoPUyZH.css" as="style"><link rel="stylesheet" href="/skill/assets/style-CWoPUyZH.css">
+    <link rel="modulepreload" href="/skill/assets/app-DrE-gYV7.js"><link rel="modulepreload" href="/skill/assets/minglingmoshihexiangyuanmoshi.html-CksOAFTy.js">
+    <link rel="prefetch" href="/skill/assets/timeline.html-C9Mu2f56.js" as="script"><link rel="prefetch" href="/skill/assets/posts.html-nNgTYfwH.js" as="script"><link rel="prefetch" href="/skill/assets/friendship-link.html-BtrDzmEe.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-CR0C_7hn.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-CBDEelpH.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-BCTfFtCD.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-CT59soAE.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-CWOMQGnZ.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-AHnCQlkK.js" as="script"><link rel="prefetch" href="/skill/assets/1.html-eVeSPSj9.js" as="script"><link rel="prefetch" href="/skill/assets/index.html-DIvEJxZ-.js" as="script"><link rel="prefetch" href="/skill/assets/api.html-DhO1Nc0r.js" as="script"><link rel="prefetch" href="/skill/assets/home.html-0-v7baUf.js" as="script"><link rel="prefetch" href="/skill/assets/plugin.html-CpE8npad.js" as="script"><link rel="prefetch" href="/skill/assets/theme.html-BaHVPDQ-.js" as="script"><link rel="prefetch" href="/skill/assets/diannaoweixiu1.html-Cj4rnlPm.js" as="script"><link rel="prefetch" href="/skill/assets/diannaoweixiu2.html-BqaaKkSw.js" as="script"><link rel="prefetch" href="/skill/assets/gaishu.html-2Ns6aBXl.js" as="script"><link rel="prefetch" href="/skill/assets/guanchazhemoshi.html-C22GY2IU.js" as="script"><link rel="prefetch" href="/skill/assets/jisuanjituxingxuejichu（yi）：guangzhatu（weitu）.html-Cse61u2O.js" as="script"><link rel="prefetch" href="/skill/assets/404.html-BMuCqu_4.js" as="script"><link rel="prefetch" href="/skill/assets/reco-valine-BI2JzRng.js" as="script"><link rel="prefetch" href="/skill/assets/giscus-aTimukGI-CKTvSCx2.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="theme-container"><div class="common-wrapper series--no show-catalog"><header class="navbar-container" style="top:0;"><div class="site-brand nav-item"><img class="logo" src="/skill/logo.png" alt="知识技能分享平台"><a href="/skill/" class="site-name can-hide">知识技能分享平台</a></div><div class="nav-item navbar-links-wrapper" style=""><div><form class="search-box" role="search"><input type="search" autocomplete="off" spellcheck="false" value><!----></form></div><nav class="navbar-links"><!--[--><div class="navbar-links__item"><a href="/skill/" class="link" aria-label="主页"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->主页<!--]--></span></span><!--[--><!--]--></a></div><div class="navbar-links__item"><a href="/skill/categories/jisuanjijishu/1" class="link" aria-label="分类"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->分类<!--]--></span></span><!--[--><!--]--></a></div><div class="navbar-links__item"><a href="/skill/tags/jisuanjituxingxue/1" class="link" aria-label="标签"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->标签<!--]--></span></span><!--[--><!--]--></a></div><!--]--></nav><span class="xicon-container btn-toggle-dark-mode btn--dark-mode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" style="width:20px;height:20px;font-size:20px;color:inherit;"><path d="M15 2h2v3h-2z" fill="currentColor"></path><path d="M27 15h3v2h-3z" fill="currentColor"></path><path d="M15 27h2v3h-2z" fill="currentColor"></path><path d="M2 15h3v2H2z" fill="currentColor"></path><path d="M5.45 6.884l1.414-1.415l2.121 2.122l-1.414 1.414z" fill="currentColor"></path><path d="M23 7.58l2.121-2.12l1.414 1.414l-2.121 2.121z" fill="currentColor"></path><path d="M23.002 24.416l1.415-1.414l2.12 2.122l-1.413 1.414z" fill="currentColor"></path><path d="M5.47 25.13L7.59 23L9 24.42l-2.12 2.12l-1.41-1.41z" fill="currentColor"></path><path d="M16 8a8 8 0 1 0 8 8a8 8 0 0 0-8-8zm0 14a6 6 0 0 1 0-12z" fill="currentColor"></path></svg></span><span class="xicon-container btn-toggle-menus"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" style="width:20px;height:20px;font-size:20px;color:inherit;"><circle cx="16" cy="8" r="2" fill="currentColor"></circle><circle cx="16" cy="16" r="2" fill="currentColor"></circle><circle cx="16" cy="24" r="2" fill="currentColor"></circle></svg></span></div></header><!----><div class="mobile-menus-container"><nav class="navbar-links mobile"><!--[--><div class="navbar-links__item"><a href="/skill/" class="link" aria-label="主页"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->主页<!--]--></span></span><!--[--><!--]--></a></div><div class="navbar-links__item"><a href="/skill/categories/jisuanjijishu/1" class="link" aria-label="分类"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->分类<!--]--></span></span><!--[--><!--]--></a></div><div class="navbar-links__item"><a href="/skill/tags/jisuanjituxingxue/1" class="link" aria-label="标签"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->标签<!--]--></span></span><!--[--><!--]--></a></div><!--]--></nav><div class="appearance"><span>Appearance</span><span class="xicon-container btn-toggle-dark-mode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" style="width:20px;height:20px;font-size:20px;color:inherit;"><path d="M15 2h2v3h-2z" fill="currentColor"></path><path d="M27 15h3v2h-3z" fill="currentColor"></path><path d="M15 27h2v3h-2z" fill="currentColor"></path><path d="M2 15h3v2H2z" fill="currentColor"></path><path d="M5.45 6.884l1.414-1.415l2.121 2.122l-1.414 1.414z" fill="currentColor"></path><path d="M23 7.58l2.121-2.12l1.414 1.414l-2.121 2.121z" fill="currentColor"></path><path d="M23.002 24.416l1.415-1.414l2.12 2.122l-1.413 1.414z" fill="currentColor"></path><path d="M5.47 25.13L7.59 23L9 24.42l-2.12 2.12l-1.41-1.41z" fill="currentColor"></path><path d="M16 8a8 8 0 1 0 8 8a8 8 0 0 0-8-8zm0 14a6 6 0 0 1 0-12z" fill="currentColor"></path></svg></span></div></div><div class="series-mask"></div><aside class="series-container"><div class="site-brand"><img class="logo" src="/skill/logo.png" alt="知识技能分享平台"><a href="/skill/" class="site-name can-hide">知识技能分享平台</a></div><!--[--><!--]--></aside><!--[--><main class="page-container"><h1 class="page-title">游戏编程模式（二）：命令模式和享元模式</h1><div class="page-info"><span class="xicon-container left"><!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" class="xicon-icon" style="width:18px;height:18px;font-size:18px;color:inherit;"><path d="M16 4a5 5 0 1 1-5 5a5 5 0 0 1 5-5m0-2a7 7 0 1 0 7 7a7 7 0 0 0-7-7z" fill="currentColor"></path><path d="M26 30h-2v-5a5 5 0 0 0-5-5h-6a5 5 0 0 0-5 5v5H6v-5a7 7 0 0 1 7-7h6a7 7 0 0 1 7 7z" fill="currentColor"></path></svg><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->桃酥<!--]--></span></span><span class="xicon-container left"><!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" class="xicon-icon" style="width:18px;height:18px;font-size:18px;color:inherit;"><path d="M26 4h-4V2h-2v2h-8V2h-2v2H6c-1.1 0-2 .9-2 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 22H6V12h20v14zm0-16H6V6h4v2h2V6h8v2h2V6h4v4z" fill="currentColor"></path></svg><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->2024/05/13<!--]--></span></span><span class="xicon-container left"><!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" class="xicon-icon" style="width:18px;height:18px;font-size:18px;color:inherit;"><path d="M11.17 6l3.42 3.41l.58.59H28v16H4V6h7.17m0-2H4a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h24a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2H16l-3.41-3.41A2 2 0 0 0 11.17 4z" fill="currentColor"></path></svg><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[--><!--[--><a href="/skill/categories/jisuanjijishu/1.html" class="">计算机技术</a><!--]--><!--]--></span></span><span class="xicon-container left"><!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" class="xicon-icon" style="width:18px;height:18px;font-size:18px;color:inherit;"><path d="M10 14a4 4 0 1 1 4-4a4.005 4.005 0 0 1-4 4zm0-6a2 2 0 1 0 1.998 2.004A2.002 2.002 0 0 0 10 8z" fill="currentColor"></path><path d="M16.644 29.415L2.586 15.354A2 2 0 0 1 2 13.941V4a2 2 0 0 1 2-2h9.941a2 2 0 0 1 1.414.586l14.06 14.058a2 2 0 0 1 0 2.828l-9.943 9.943a2 2 0 0 1-2.829 0zM4 4v9.942L18.058 28L28 18.058L13.942 4z" fill="currentColor"></path></svg><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[--><!--[--><a href="/skill/tags/youxikaifa/1.html" class="">游戏开发</a><!--]--><!--]--></span></span><!----></div><div class="theme-reco-default-content"><div><h1 id="游戏编程模式-二-命令模式和享元模式" tabindex="-1"><a class="header-anchor" href="#游戏编程模式-二-命令模式和享元模式"><span>游戏编程模式（二）：命令模式和享元模式</span></a></h1><h2 id="命令模式" tabindex="-1"><a class="header-anchor" href="#命令模式"><span>命令模式</span></a></h2><p>​ 命令模式在GoF中有个晦涩的定义：</p><div class="language-text line-numbers-mode" data-ext="text" data-title="text"><pre class="language-text"><code>将一个请求封装为一个对象，从而使你可用不同的请求对客户进行参数化；对请求排队或记录请求日志，以及支持可撤销的操作。
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><p>​ 高度抽象的定义加上蹩脚的翻译使其难懂，接下来会使用一些代码案例描述我们开发过程中可能遇到的场景，并展示解耦的<strong>过程演化</strong>。</p><p><strong>一.</strong></p><p>​ 在实现人物控制的功能时，简单的实现会是：</p><div class="language-c++ line-numbers-mode" data-ext="c++" data-title="c++"><pre class="language-c++"><code>void InputHandler::handleInput()
+{
+    if (isPressed(BUTTON_X)) jump();
+    else if (isPressed(BUTTON_Y)) fireGun();
+    ...
+}
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>二.</strong></p><p>​ 游戏中一般会有配置按键的功能，这时就要求类似jump()这种方法调用转变为可变换的东西，自然我们会将其用一个对象来表示，这时我们就进入了命令模式，用一个<strong>Command</strong>类来作为基类，将类似jump()这种游戏行为都定义为一个子类：</p><div class="language-c++ line-numbers-mode" data-ext="c++" data-title="c++"><pre class="language-c++"><code>// 定义子类
+class JumpCommand : public Command
+{
+public:
+    virtual void execute() { jump(); }
+};
+class FireCommand : public Command
+{
+public:
+	virtual void execute() { fireGun(); }
+};
+
+class InputHandler
+{
+public:
+    void handleInput();
+    // 绑定命令的方法……
+private:
+    Command* buttonX_;
+    Command* buttonY_;
+    ...
+};
+
+void InputHandler::handleInput()
+{
+    if (isPressed(BUTTON_X)) buttonX_-&gt;execute();
+    else if (isPressed(BUTTON_Y)) buttonY_-&gt;execute();
+    ...
+}
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ 此时就可以通过改变各个button变量的值来改变按键的设置。</p><p><strong>三.</strong></p><p>​ jump()这些行为方法一般会与某个玩家角色进行关联，但是我们不应该让方法去找它们控制的角色，而是应将角色对象作为参数传进去：</p><div class="language-c++ line-numbers-mode" data-ext="c++" data-title="c++"><pre class="language-c++"><code>class JumpCommand : public Command
+{
+public:
+    virtual void execute(GameActor&amp; actor)
+    {
+    	actor.jump();
+    }
+};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ 这样做的好处就是可以灵活控制任意的角色，只需要传入不同的角色对象。但此时需要把actor角色对象与handleInput()方法进行解耦，把execute()的执行放到外面去：</p><div class="language-c++ line-numbers-mode" data-ext="c++" data-title="c++"><pre class="language-c++"><code>Command* InputHandler::handleInput()
+{
+    if (isPressed(BUTTON_X)) return buttonX_;
+    if (isPressed(BUTTON_Y)) return buttonY_;
+    ...
+}
+
+Command* command = inputHandler.handleInput();
+if (command)
+{
+	command-&gt;execute(actor);
+}
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>四.</strong></p><p>​ 在典型的回合制策略游戏中，一般会有回滚这一概念，可以撤销或者重做玩家不喜欢的操作。命令模式完美地提供了这一问题的解决方案。</p><p>​ 比如，在实现移动某个单位的功能时，代码可能如下：</p><div class="language-C++ line-numbers-mode" data-ext="C++" data-title="C++"><pre class="language-C++"><code>class MoveUnitCommand : public Command
+{
+public:
+	...
+    virtual void execute()
+    {
+    	unit_-&gt;moveTo(x_, y_);
+    }
+private:
+    Unit* unit_;
+    int x_, y_;
+};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ 这里的命令更特殊，将x，y作为成员变量，这意味着控制代码会在玩家做出操作时创造一个实例：</p><div class="language-c++ line-numbers-mode" data-ext="c++" data-title="c++"><pre class="language-c++"><code>Command* handleInput()
+{
+    Unit* unit = getSelectedUnit();
+    if (isPressed(BUTTON_UP)) {
+        // 向上移动单位
+        int destY = unit-&gt;y() - 1;
+        return new MoveUnitCommand(unit, unit-&gt;x(), destY);
+    }
+    if (isPressed(BUTTON_DOWN)) {
+        // 向下移动单位
+        int destY = unit-&gt;y() + 1;
+        return new MoveUnitCommand(unit, unit-&gt;x(), destY);
+    }
+    // 其他的移动……
+    return NULL;
+}	
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ 在此基础上，可以增加一个记录移动之前位置的变量，来达到撤销操作的目的：</p><div class="language-c++ line-numbers-mode" data-ext="c++" data-title="c++"><pre class="language-c++"><code>class MoveUnitCommand : public Command
+{
+public:
+    ...
+    virtual void execute()
+    {
+        // 保存移动之前的位置
+        xBefore_ = unit_-&gt;x();
+        yBefore_ = unit_-&gt;y();
+        unit_-&gt;moveTo(x_, y_);
+    }
+    virtual void undo()
+    {
+    	unit_-&gt;moveTo(xBefore_, yBefore_);
+    }
+private:
+    Unit* unit_;
+    int xBefore_, yBefore_;
+    int x_, y_;
+};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>五.</strong></p><p>​ 撤销和重做是一对正反操作，实现类似软件中的撤销列表和重做列表，只需将其维护成一个链表：</p><p>​ <img src="/skill/assets/image-20230707025134216-z72phEbs.png" alt="image-20230707025134216"></p><h2 id="享元模式" tabindex="-1"><a class="header-anchor" href="#享元模式"><span>享元模式</span></a></h2><p>​ 享元模式非常简单，简单提一下。</p><p>​ 游戏开发中，如果要呈现一片巨大的森林，成千上万的树，每棵树都由上千的多边形组成，在不做任何优化的情况下，可以就是每秒送到GPU六十次的百万个多边形。</p><p><strong>一.</strong></p><p>​ 定义一个树看起来会是：</p><div class="language-C++ line-numbers-mode" data-ext="C++" data-title="C++"><pre class="language-C++"><code>class Tree
+{
+private:
+    Mesh mesh_;  //多边形网格
+    Texture bark_; 
+    Texture leaves_; //树皮、树叶纹理
+    Vector position_; //位置
+    double height_;
+    double thickness_; //高度厚度
+    Color barkTint_;
+    Color leafTint_; //颜色
+};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>二.</strong></p><p>​ 享元模式简单到甚至不需要去知道有这么个设计模式，自然地就会把它用在代码中。GoF称之为固有状态，即上下文无关的部分，剩余部分是变化状态，那些每个实例独一无二的东西。在这个例子中，是每棵树的位置，高度和颜色：</p><div class="language-C++ line-numbers-mode" data-ext="C++" data-title="C++"><pre class="language-C++"><code>class TreeModel
+{
+private:
+    Mesh mesh_;
+    Texture bark_;
+    Texture leaves_;
+};
+
+class Tree
+{
+private:
+    TreeModel* model_; //所有树共用一个模型实例
+    Vector position_;
+    double height_;
+    double thickness_;
+    Color barkTint_;
+    Color leafTint_;
+};
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>​ 拓展一下，多数情况下不会在一开始就创建所有享元，当你需要一个时，一般会先检查是否已经创建了一个相同的实例，这通常意味着需要将构造函数封装在检查实例是否已经存在的接口之后，这也许会用到<strong>工厂方法</strong>。</p><p>​ 为了返回一个已有的享元，通常需要一个存储它们的地方，使用<strong>对象池</strong>会是一个好办法。</p><p>​ 在<strong>状态模式</strong>（会在接下来的章节中总结）中，经常会出现一些没有任何“独一无二”字段的状态对象，这时享元模式会派上用场。</p></div></div><footer class="page-meta"><!----><div class="meta-item last-updated"><span class="xicon-container left meta-item-label"><!--[--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" class="xicon-icon" style="width:20px;height:20px;font-size:20px;color:inherit;"><path d="M26 4h-4V2h-2v2h-8V2h-2v2H6c-1.1 0-2 .9-2 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 22H6V12h20v14zm0-16H6V6h4v2h2V6h8v2h2V6h4v4z" fill="currentColor"></path></svg><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->Last Updated 5/22/2024, 2:56:22 AM<!--]--></span></span></div></footer><!----><!----></main><!--]--><div class="page-catalog-container"><h5 class="tip">ON THIS PAGE</h5><ul><!--[--><!--[--><li class="page-catalog-menu-depth_2"><a aria-current="page" href="/skill/blogs/jisuanjijishu/2024/youxibianchengmoshi/minglingmoshihexiangyuanmoshi.html#命令模式" class="router-link-active router-link-exact-active link page-catalog-item page-catalog-item" aria-label="命令模式"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->命令模式<!--]--></span></span><!--[--><!--]--></a></li><!--]--><!--[--><li class="page-catalog-menu-depth_2"><a aria-current="page" href="/skill/blogs/jisuanjijishu/2024/youxibianchengmoshi/minglingmoshihexiangyuanmoshi.html#享元模式" class="router-link-active router-link-exact-active link page-catalog-item page-catalog-item" aria-label="享元模式"><!--[--><!--]--><span class="xicon-container left"><!--[--><!----><!--]--><span class="xicon-content" style="color:inherit;font-size:14px;"><!--[-->享元模式<!--]--></span></span><!--[--><!--]--></a></li><!--]--><!--]--></ul></div></div></div><!--[--><!----><!----><!--]--><!--]--></div>
+    <script type="module" src="/skill/assets/app-DrE-gYV7.js" defer></script>
+  </body>
+</html>
